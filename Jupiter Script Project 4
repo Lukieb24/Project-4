@@ -1,11 +1,16 @@
+print("Introduction:")
+print("In this exploratory data analysis (EDA), I aim to investigate the dataset by visualizing the key variables. "
+      "Through this process, I will examine the distribution of numerical variables, explore relationships between variables, "
+      "and identify any interesting trends, patterns, or outliers that could be useful for deeper analysis.")
+
+
+
 import pandas as pd
 import streamlit as st
 import plotly.express as px
 
-
-
+# Load the data
 df = pd.read_csv('vehicles_us.csv')
-
 
 # Check for duplicates and display the count
 st.sidebar.subheader('Duplicate Data Check')
@@ -42,6 +47,10 @@ This dashboard presents an exploratory analysis of the vehicle dataset. We analy
 condition_filter = st.sidebar.selectbox("Select Vehicle Condition", options=df['condition'].unique(), index=0)
 filtered_df = df[df['condition'] == condition_filter]
 
+# Add an additional filter for excluding very expensive vehicles
+max_price = st.sidebar.slider('Max Vehicle Price', min_value=int(df['price'].min()), max_value=int(df['price'].max()), value=int(df['price'].max()))
+filtered_df = filtered_df[filtered_df['price'] <= max_price]
+
 # Histogram for vehicle prices
 st.subheader('Histogram of Vehicle Prices')
 st.plotly_chart(px.histogram(filtered_df, x='price', nbins=50, title=f'Price Distribution for Condition: {condition_filter}'))
@@ -66,8 +75,15 @@ st.plotly_chart(px.scatter(filtered_df, x='cylinders', y='price', title=f'Price 
                            labels={'cylinders': 'Cylinders', 'price': 'Price (USD)'}))
 st.write(f"**Conclusion:** In **{condition_filter}** condition, vehicles with more cylinders are generally priced higher, with a noticeable increase in price for those with 8 or more cylinders.")
 
-# New chart: Price Distribution by Manufacturer
-st.subheader('Box Plot: Price Distribution by Manufacturer')
-st.plotly_chart(px.box(filtered_df, x='manufacturer', y='price', title=f'Price Distribution by Manufacturer for Condition: {condition_filter}',
-                       labels={'manufacturer': 'Manufacturer', 'price': 'Price (USD)'}))
-st.write(f"**Conclusion:** Prices vary significantly between manufacturers. Premium brands tend to have a higher price range compared to more common brands in **{condition_filter}** condition.")
+
+# New chart: Price Distribution by Model (instead of Manufacturer)
+st.subheader('Box Plot: Price Distribution by Model')
+st.plotly_chart(px.box(filtered_df, x='model', y='price', title=f'Price Distribution by Model for Condition: {condition_filter}',
+                       labels={'model': 'Model', 'price': 'Price (USD)'}))
+st.write(f"**Conclusion:** Prices vary significantly between models. Premium models tend to have a higher price range compared to more common models in **{condition_filter}** condition.")
+
+print("\nConclusion:")
+print("Overall, this exploratory analysis has provided valuable insights into the dataset. "
+      "I was able to identify key patterns, such as the distribution of numerical variables, trends across categories, "
+      "and correlations between variables. These observations will help guide further analysis and model-building efforts, "
+      "particularly focusing on the relationships identified in the scatter plot and correlation heatmap.")
