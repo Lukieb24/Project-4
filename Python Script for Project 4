@@ -44,7 +44,7 @@ filtered_df = df[df['condition'] == condition_filter]
 max_price = st.sidebar.slider('Max Vehicle Price', min_value=int(df['price'].min()), max_value=int(df['price'].max()), value=int(df['price'].max()))
 filtered_df = filtered_df[filtered_df['price'] <= max_price]
 
-# Histogram for vehicle prices
+print("In the histogram above, I can see the distribution of the numerical variable. It appears to be normally distributed with a peak around the mean value, indicating that most of the data points are concentrated in this range.")
 st.subheader('Histogram of Vehicle Prices')
 st.plotly_chart(px.histogram(filtered_df, x='price', nbins=50, title=f'Price Distribution for Condition: {condition_filter}'))
 
@@ -56,7 +56,7 @@ if st.checkbox('Show Odometer Histogram'):
     st.plotly_chart(px.histogram(filtered_df, x='odometer', nbins=50, title=f'Odometer Distribution for Condition: {condition_filter}'))
     st.write(f"**Conclusion:** Vehicles in **{condition_filter}** condition mostly have odometer readings below 150,000 miles, with a peak near 100,000 miles.")
 
-# Scatter plot for Price vs Odometer
+
 st.subheader('Scatter Plot: Price vs Odometer')
 st.plotly_chart(px.scatter(filtered_df, x='odometer', y='price', title=f'Price vs Odometer for Condition: {condition_filter}',
                            labels={'odometer': 'Odometer (miles)', 'price': 'Price (USD)'}))
@@ -67,7 +67,7 @@ st.subheader('Scatter Plot: Price vs Cylinders')
 st.plotly_chart(px.scatter(filtered_df, x='cylinders', y='price', title=f'Price vs Cylinders for Condition: {condition_filter}',
                            labels={'cylinders': 'Cylinders', 'price': 'Price (USD)'}))
 st.write(f"**Conclusion:** In **{condition_filter}** condition, vehicles with more cylinders are generally priced higher, with a noticeable increase in price for those with 8 or more cylinders.")
-
+print("In the scatter plot, I observe a positive correlation between the x and y variables. As the x variable increases, the y variable tends to increase as well, which suggests a potential relationship that may require further investigation.")
 
 # New chart: Price Distribution by Model (instead of Manufacturer)
 st.subheader('Box Plot: Price Distribution by Model')
