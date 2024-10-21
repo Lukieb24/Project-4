@@ -75,6 +75,13 @@ st.subheader('Box Plot: Price Distribution by Model')
 filtered_df['model'] = filtered_df['model'].fillna('Unknown')  # Handle missing models if any
 top_models = filtered_df['model'].value_counts().nlargest(20).index  # Limit to top 20 models for clarity
 filtered_df_top_models = filtered_df[filtered_df['model'].isin(top_models)]  # Filter the dataframe to top models
+# Box Plot: Price Distribution by Model (instead of Manufacturer)
+st.subheader('Box Plot: Price Distribution by Model')
+
+# Ensure that the 'model' column has no null values and is categorized to avoid too many unique entries
+filtered_df['model'] = filtered_df['model'].fillna('Unknown')  # Handle missing models if any
+top_models = filtered_df['model'].value_counts().nlargest(20).index  # Limit to top 20 models for clarity
+filtered_df_top_models = filtered_df[filtered_df['model'].isin(top_models)]  # Filter the dataframe to top models
 
 # Plot the boxplot for the top models
 st.plotly_chart(px.box(filtered_df_top_models, x='model', y='price', title=f'Price Distribution by Top 20 Models for Condition: {condition_filter}',
@@ -82,8 +89,6 @@ st.plotly_chart(px.box(filtered_df_top_models, x='model', y='price', title=f'Pri
                        category_orders={'model': top_models}))  # Ensure consistent model order
 
 st.write(f"**Conclusion:** Prices vary significantly between the top 20 models. Premium models tend to have a higher price range compared to more common models in **{condition_filter}** condition.")
-
-
 # New chart: Price Distribution by Model (instead of Manufacturer)
 st.subheader('Box Plot: Price Distribution by Model')
 st.plotly_chart(px.box(filtered_df, x='model', y='price', title=f'Price Distribution by Model for Condition: {condition_filter}',
